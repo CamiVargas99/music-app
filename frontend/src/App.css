@@ -3,134 +3,23 @@ body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f9;
-  color: #333;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  flex-direction: column;
+  box-sizing: border-box;
+  background-color: #f5f5f5;
 }
 
 /* Contenedor principal */
 .container {
-  max-width: 600px;
-  width: 100%;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  width: 100vw;
+  height: 100vh;
 }
-
-/* Título principal */
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: black;
-  font-size: 2.5em;
-}
-
-/* Menú de navegación */
-nav {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
-nav a {
-  padding: 5px 10px; 
-  margin: 0 15px;
-  text-decoration: none;
-  color: #007bff;
-  border: 1px solid transparent;
-  border-radius: 5px;
-  transition: background-color 0.3s, border-color 0.3s;
-}
-
-nav a:hover {
-  background-color: #007bff;
-  color: white;
-  border-color: #0056b3;
-}
-
-/* Imágenes de los libros */
-.book-images {
+.navbar {
   display: flex;
   justify-content: space-around;
-  margin-bottom: 20px;
+  background-color: black;
+  color: white;
+  padding: 1rem;
 }
-
-.book-images img {
-  width: 100px;
-  height: auto;
-  border-radius: 5px;
-}
-
-/* Opciones de navegación */
-.options {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.options a {
-  padding: 8px 12px; 
+.navbar a {
+  color: white;
   text-decoration: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 5px;
-  margin: 15px 0; 
-  width: 200px;
-  text-align: center;
-  transition: background-color 0.3s;
-}
-
-.options a:hover {
-  background-color: #0056b3;
-}
-
-/* Mensajes de error */
-.error-message {
-  color: red;
-  text-align: center;
-  margin-top: 10px;
-}
-
-/* Estilos para el formulario */
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-form input, form textarea {
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1em;
-}
-
-/* Botón de envío del formulario */
-form button {
-  padding: 10px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-form button:hover {
-  background-color: #218838;
-}
-
-/* Estilos para la lista de libros favoritos */
-.favorite-book {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-}
-
-.favorite-book:last-child {
-  border-bottom: none; /* Eliminar borde inferior del último libro */
 }

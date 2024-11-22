@@ -1,59 +1,76 @@
 import React, { useEffect, useState } from 'react';
 
 const HomePage = ({ loggedInUser }) => {
-  const [books, setBooks] = useState([]);
-  const [filteredBooks, setFilteredBooks] = useState([]);
+  const [albums, setAlbums] = useState([]);
+  const [filteredAlbums, setFilteredAlbums] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const [favorites, setFavorites] = useState(new Set()); 
+  const [favorites, setFavorites] = useState(new Set());
 
   useEffect(() => {
-    // Llamada al backend para obtener todos los libros
-    const fetchBooks = async () => {
+    const fetchAlbums = async () => {
       try {
-        const response = await fetch('/api/books'); 
+        const response = await fetch('http://localhost:3001/api/albums');
         if (!response.ok) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
         const data = await response.json();
-        setBooks(data);
-        setFilteredBooks(data); 
+        setAlbums(data);
+        setFilteredAlbums(data);
       } catch (error) {
-        console.error('Error al obtener los libros:', error);
+        console.error('Error al obtener los álbumes:', error);
       }
     };
-    fetchBooks();
+    fetchAlbums();
   }, []);
-
 
   const handleFilter = () => {
     if (searchText.trim() === '') {
-      // Si no hay texto de búsqueda, mostrar todos los libros
-      setFilteredBooks(books);
+      setFilteredAlbums(albums);
     } else {
-      // Filtrar los libros por título, ignorando mayúsculas y minúsculas
-      const filtered = books.filter((book) =>
-        book.title.toLowerCase().includes(searchText.toLowerCase())
+      const filtered = albums.filter((album) =>
+        album.title.toLowerCase().includes(searchText.toLowerCase())
       );
-      setFilteredBooks(filtered);
+      setFilteredAlbums(filtered);
     }
   };
 
-  // Función para manejar favoritos
-  const toggleFavorite = (bookId) => {
+  const toggleFavorite = (albumId) => {
     const updatedFavorites = new Set(favorites);
-    if (updatedFavorites.has(bookId)) {
-      updatedFavorites.delete(bookId); 
+    if (updatedFavorites.has(albumId)) {
+      updatedFavorites.delete(albumId);
     } else {
-      updatedFavorites.add(bookId); 
+      updatedFavorites.add(albumId);
     }
     setFavorites(updatedFavorites);
   };
 
-  // Barra de búsqueda y listado de libros
+  const handleDeleteAlbum = async (albumId) => {
+    const confirmed = window.confirm('¿Estás seguro de que quieres eliminar este álbum?');
+    if (confirmed) {
+      try {
+        const response = await fetch(`http://localhost:3001/api/albums/${albumId}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Error al eliminar el álbum');
+        }
+
+       
+        setAlbums((prevAlbums) => prevAlbums.filter((album) => album._id !== albumId));
+        setFilteredAlbums((prevFiltered) => prevFiltered.filter((album) => album._id !== albumId));
+      } catch (error) {
+        console.error('Error al eliminar el álbum:', error);
+      }
+    }
+  };
+
   return (
     <div>
-      <h2>Listado de libros</h2>
-
+      <h2>Listado de Álbumes</h2>
       <div>
         <input
           type="text"
@@ -63,27 +80,30 @@ const HomePage = ({ loggedInUser }) => {
         />
         <button onClick={handleFilter}>Filtrar</button>
       </div>
-
       <div>
-        {filteredBooks.length > 0 ? (
-          filteredBooks.map((book) => (
-            <div key={book._id} style={{ marginBottom: '20px' }}>
-              <h3>{book.title}</h3>
-              <p>Autor: {book.author}</p>
-
-           
-              {book.createdBy === loggedInUser && (
-                <button style={{ marginRight: '10px' }}>Editar</button>
+        {filteredAlbums.length > 0 ? (
+          filteredAlbums.map((album) => (
+            <div key={album._id} style={{ marginBottom: '20px' }}>
+              <h3>{album.title}</h3>
+              <p>Artista: {album.artist}</p>
+              <p>Número de canciones: {album.songs.length}</p>
+              {album.createdBy === loggedInUser && (
+                <>
+                  <button style={{ marginRight: '10px' }} onClick={() => {  }}>
+                    Editar
+                  </button>
+                  <button onClick={() => handleDeleteAlbum(album._id)} style={{ marginLeft: '10px' }}>
+                    Eliminar Álbum
+                  </button>
+                </>
               )}
-
-              
-              <button onClick={() => toggleFavorite(book._id)} style={{ marginLeft: '10px' }}>
-                {favorites.has(book._id) ? '❤️' : '🤍'} 
+              <button onClick={() => toggleFavorite(album._id)} style={{ marginLeft: '10px' }}>
+                {favorites.has(album._id) ? '❤️' : '🤍'}
               </button>
             </div>
           ))
         ) : (
-          <p>No se encontraron libros.</p>
+          <p>No se encontraron álbumes.</p>
         )}
       </div>
     </div>

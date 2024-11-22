@@ -1,43 +1,42 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import userRoutes from './routes/userRoutes.js';
-import dotenv from 'dotenv';
-import authMiddleware from './Middleware/authMiddleware.js'; 
-import bookRoutes from './routes/bookRoutes.js';
+// IMPORTACIONES
+import dotenv from "dotenv";
+import express from "express";
+import dbConnect from './config/mongoose.config.js';
+import cors from 'cors';
 
-dotenv.config();
-const app = express();
+// IMPORTACION DE ROUTES
+import userRoutes from './routes/user.routes.js';
+import albumRoutes from './routes/album.routes.js';
+import sessionRoutes from './routes/session.routes.js';
 
-// Middleware para parsear JSON
-app.use(express.json()); 
+dotenv.config(); 
+const app = express(); 
+const PORT = process.env.PORT || 3001; 
 
-// Rutas de usuario
-app.use('/api', userRoutes); 
+// CONFIGURACIONES
+app.use(express.json()); // SOPORTE PARA FORMATO JSON
 
-// Rutas de libros
-app.use('/api/books', bookRoutes); // Asegúrate de que esta línea esté presente
+app.use(cors({
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], 
+    credentials: true,
+})); 
 
-// Middleware de autenticación para rutas protegidas (ejemplo)
-app.use('/api/protected', authMiddleware, (req, res) => {
-  res.send('Esta es una ruta protegida!');
-});
+// USO DE RUTAS
+app.use("/api/users", userRoutes);
+app.use("/api/album", albumRoutes);
+app.use("/api/session", sessionRoutes);
 
-// Manejo de errores
+// Crear la conexión con la base de datos
+dbConnect();
+
+
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Algo salió mal!');
+    console.error(err.stack);
+    res.status(500).send('Algo salió mal!');
 });
 
-// Conectar a MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => {
-    console.log('Conectado a MongoDB');
-    app.listen(process.env.PORT || 5000, () => {
-      console.log(`Servidor en ejecución en el puerto ${process.env.PORT || 5000}`);
-    });
-  })
-  .catch(err => console.error('Error de conexión a MongoDB:', err));
-
+// servidor
+app.listen(PORT, () => {
+    
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});

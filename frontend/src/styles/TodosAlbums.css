@@ -1,0 +1,47 @@
+/* src/styles/TodosLibros.css */
+.todos-libros-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .libros-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .libro-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    width: 200px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .libro-imagen {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+  }
+  
+  .edit-button {
+    margin-top: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .edit-button:hover {
+    background-color: #45a049;
+  }
+  
+  .error-message {
+    color: red;
+    margin-bottom: 20px;
+  }
+  

@@ -6,8 +6,8 @@ const Header = ({ onLogout }) => {
     <header>
       <nav>
         <Link to="/">Home</Link>
-        <Link to="/add-book">Agregar Libro</Link>
-        <Link to="/favorite-books">Mis Libros Favoritos</Link>
+        <Link to="/">Agregar Album</Link>
+        <Link to="/">Mis Favoritos</Link>
         <button onClick={onLogout}>Cerrar Sesión</button>
       </nav>
     </header>
